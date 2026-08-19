@@ -79,7 +79,7 @@ function inspectArtifact(item,index){
   $("#artifactStage").style.background=layers[current].color;$("#artifactStage").innerHTML=`<span class="shape ${item.shape}"></span>`;
   $("#artifactType").textContent=item.type;$("#artifactTitle").textContent=item.name;$("#artifactDescription").textContent=item.description;
   const action=$("#artifactAction");action.textContent=item.action;action.onclick=()=>{action.textContent=item.result;action.disabled=true;tone(440,.3,"triangle");};
-  $("#artifactDialog").showModal();
+  const panel=$("#artifactDialog");panel.classList.add("open");panel.setAttribute("aria-hidden","false");
 }
 function showEnding(){
   shell.classList.remove("open");setTimeout(()=>{const ending=$("#ending");ending.classList.add("visible");ending.setAttribute("aria-hidden","false");tone(55,1.4,"sine")},550);
@@ -89,7 +89,7 @@ function restart(){location.reload()}
 $("#openButton").addEventListener("click",openExperience);
 $("#drawerHandle").addEventListener("click",()=>{if(current<0)openExperience();else shell.classList.toggle("open")});
 deeper.addEventListener("click",nextLayer);
-$("#dialogClose").addEventListener("click",()=>$("#artifactDialog").close());
+$("#dialogClose").addEventListener("click",()=>{const panel=$("#artifactDialog");panel.classList.remove("open");panel.setAttribute("aria-hidden","true")});
 $("#restartButton").addEventListener("click",restart);
 $("#soundToggle").addEventListener("click",e=>{sound=!sound;e.currentTarget.textContent=sound?"SOUND ON":"SOUND OFF";e.currentTarget.setAttribute("aria-pressed",String(sound));if(sound)tone(300,.1)});
 buildMap();
