@@ -90,7 +90,6 @@ $("#openButton").addEventListener("click",openExperience);
 $("#drawerHandle").addEventListener("click",()=>{if(current<0)openExperience();else shell.classList.toggle("open")});
 deeper.addEventListener("click",nextLayer);
 $("#dialogClose").addEventListener("click",()=>$("#artifactDialog").close());
-$("#artifactDialog").addEventListener("click",e=>{if(e.target===$("#artifactDialog"))$("#artifactDialog").close()});
 $("#restartButton").addEventListener("click",restart);
 $("#soundToggle").addEventListener("click",e=>{sound=!sound;e.currentTarget.textContent=sound?"SOUND ON":"SOUND OFF";e.currentTarget.setAttribute("aria-pressed",String(sound));if(sound)tone(300,.1)});
 buildMap();
