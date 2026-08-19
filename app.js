@@ -57,19 +57,20 @@ function renderObjects(layer){
   layer.items.forEach((item,i)=>{
     const button=document.createElement("button");button.className="object";button.style.left=positions[i][0]+"%";button.style.top=positions[i][1]+"%";button.dataset.index=i;
     button.innerHTML=`<span class="shape ${item.shape}"></span><span class="object-label">${item.name}</span>`;
-    button.addEventListener("pointerdown",startDrag);button.addEventListener("click",()=>{if(button.dataset.pointerInspected){delete button.dataset.pointerInspected;return}inspectArtifact(item,i)});contents.append(button);
+    button.addEventListener("pointerdown",startDrag);button.addEventListener("click",()=>{if(button.dataset.justDragged){delete button.dataset.justDragged;return}inspectArtifact(item,i)});contents.append(button);
   });
 }
 function startDrag(e){
-  const el=e.currentTarget,box=contents.getBoundingClientRect(),r=el.getBoundingClientRect();drag={el,box,dx:e.clientX-r.left,dy:e.clientY-r.top,startX:e.clientX,startY:e.clientY};el.setPointerCapture(e.pointerId);el.addEventListener("pointermove",moveDrag);el.addEventListener("pointerup",endDrag,{once:true});tone(260,.05);
+  const el=e.currentTarget,box=contents.getBoundingClientRect(),r=el.getBoundingClientRect();drag={el,box,dx:e.clientX-r.left,dy:e.clientY-r.top,startX:e.clientX,startY:e.clientY};window.addEventListener("pointermove",moveDrag);window.addEventListener("pointerup",endDrag,{once:true});tone(260,.05);
 }
 function moveDrag(e){
   if(!drag)return;drag.el.style.left=Math.max(0,Math.min(drag.box.width-drag.el.offsetWidth,e.clientX-drag.box.left-drag.dx))+"px";drag.el.style.top=Math.max(0,Math.min(drag.box.height-drag.el.offsetHeight,e.clientY-drag.box.top-drag.dy))+"px";
 }
 function endDrag(e){
-  const d=drag;if(!d)return;d.el.removeEventListener("pointermove",moveDrag);drag=null;
+  const d=drag;if(!d)return;window.removeEventListener("pointermove",moveDrag);drag=null;
   const distance=Math.hypot(e.clientX-d.startX,e.clientY-d.startY);
-  if(distance<7){d.el.dataset.pointerInspected="1";inspectArtifact(layers[current].items[+d.el.dataset.index],+d.el.dataset.index);return}
+  if(distance<7)return;
+  d.el.dataset.justDragged="1";
   moved.add(d.el.dataset.index);tone(180,.08,"triangle");
   if(moved.size>=layers[current].items.length){$("#thresholdText").textContent=layers[current].threshold;threshold.classList.add("ready");setNote("All objects displaced. The drawer has revealed a second opinion about down.");}
 }
