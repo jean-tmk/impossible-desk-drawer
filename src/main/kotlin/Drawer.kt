@@ -43,6 +43,7 @@ data class DrawerState(
     val seen: MutableSet<String> = mutableSetOf(),
     val activated: MutableSet<String> = mutableSetOf(),
     var soundEnabled: Boolean = true,
+    var entered: Boolean = false,
     var dragStart: Double? = null,
     var dragOrigin: Int = 0
 ) {
@@ -148,20 +149,26 @@ class SoundEngine {
 
     fun cue(frequency: Double, duration: Double = .12, waveform: String = "sine") {
         if (!enabled) return
-        if (context == null) {
-            val ctor = js("window.AudioContext || window.webkitAudioContext")
-            context = js("new ctor()")
+        try {
+            if (context == null) {
+                val ctor = js("window.AudioContext || window.webkitAudioContext")
+                if (ctor == null) return
+                context = js("new ctor()")
+            }
+            if (context.state == "suspended") context.resume()
+            val oscillator = context.createOscillator()
+            val gain = context.createGain()
+            oscillator.type = waveform
+            oscillator.frequency.value = frequency
+            gain.gain.setValueAtTime(.035, context.currentTime)
+            gain.gain.exponentialRampToValueAtTime(.001, context.currentTime + duration)
+            oscillator.connect(gain)
+            gain.connect(context.destination)
+            oscillator.start()
+            oscillator.stop(context.currentTime + duration)
+        } catch (_: Throwable) {
+            // Audio is decorative; browser policy must never stop an interaction.
         }
-        val oscillator = context.createOscillator()
-        val gain = context.createGain()
-        oscillator.type = waveform
-        oscillator.frequency.value = frequency
-        gain.gain.setValueAtTime(.035, context.currentTime)
-        gain.gain.exponentialRampToValueAtTime(.001, context.currentTime + duration)
-        oscillator.connect(gain)
-        gain.connect(context.destination)
-        oscillator.start()
-        oscillator.stop(context.currentTime + duration)
     }
 
     fun arrival(depth: DepthBand) = cue(depth.frequency, .18, "triangle")
@@ -206,26 +213,26 @@ class CabinetRenderer(
     }
 
     fun enterCabinet() {
+        if (state.entered) return
+        state.entered = true
         sound.cue(100.0, .6, "triangle")
-        landing.asDynamic().animate(
-            arrayOf(
-                js("({ opacity: 1 })"),
-                js("({ opacity: 0, transform: 'scale(.97)' })")
-            ),
-            js("({ duration: 600, fill: 'forwards' })")
-        )
+        landing.classList.add("leaving")
         window.setTimeout({
             landing.style.display = "none"
             cabinet.show()
             state.view = ViewState.CABINET
             select(0)
-        }, 580)
+            cabinet.asDynamic().scrollIntoView(js("({ block: 'start' })"))
+        }, 520)
     }
 
     fun select(requested: Int) {
         state.selected = state.wrap(requested, catalogue.size)
         val width = min(window.innerWidth * .46, 570.0) + 28.0
         rail.style.transform = "translateX(${-state.selected * width}px)"
+        rail.querySelectorAll(".artifact").asList().forEachIndexed { index, node ->
+            (node as HTMLElement).classList.toggle("current", index == state.selected)
+        }
         query("#progress").style.width =
             "${((state.selected + 1).toDouble() / catalogue.size) * 100}%"
         refreshStatus()
@@ -245,9 +252,11 @@ class CabinetRenderer(
         state.seen += artifact.id
 
         (query("#recordImage") as HTMLImageElement).apply {
+            className = ""
             src = artifact.image
             alt = artifact.title
         }
+        record.dataset["artifact"] = artifact.id
         query("#recordNumber").textContent =
             "OBJECT ${(state.selected + 1).toString().padStart(2, '0')} / ${catalogue.size}"
         query("#recordType").textContent = artifact.classification
@@ -256,12 +265,13 @@ class CabinetRenderer(
         query("#observation").textContent = if (artifact.id in state.activated) {
             artifact.observation
         } else {
-            "Observation pending."
+            "Press the action button to see what the object does."
         }
 
         (query("#activate") as HTMLButtonElement).apply {
-            textContent = if (artifact.id in state.activated) "OBSERVATION RECORDED" else artifact.action
-            disabled = artifact.id in state.activated
+            textContent = if (artifact.id in state.activated) "REPLAY THE REACTION" else artifact.action
+            disabled = false
+            classList.remove("confirmed")
         }
         query(".record-visual").style.background =
             "radial-gradient(circle, ${artifact.atmosphere}, #171426 70%)"
@@ -276,20 +286,37 @@ class CabinetRenderer(
         val artifact = catalogue[state.selected]
         state.activated += artifact.id
         query("#observation").textContent = artifact.observation
+        val image = query("#recordImage") as HTMLImageElement
+        image.className = "reacting ${artifact.id}"
+        record.classList.add("reaction-live")
         (query("#activate") as HTMLButtonElement).apply {
-            textContent = "OBSERVATION RECORDED"
-            disabled = true
+            textContent = "REACTION RECORDED ✓"
+            disabled = false
+            classList.add("confirmed")
         }
         sound.confirmation()
+        window.setTimeout({
+            image.className = ""
+            record.classList.remove("reaction-live")
+            (query("#activate") as HTMLButtonElement).apply {
+                textContent = "REPLAY THE REACTION"
+                classList.remove("confirmed")
+            }
+        }, 2300)
 
         if (state.hasActivatedEverything(catalogue.size)) {
             query("#bottomMessage").textContent =
                 "All six objects have testified. The paper door has stopped pretending to be locked."
-            (query("#openDoor") as HTMLButtonElement).disabled = false
+            (query("#openDoor") as HTMLButtonElement).apply {
+                disabled = false
+                classList.add("unlocked")
+            }
         }
     }
 
     fun closeRecord() {
+        query("#recordImage").className = ""
+        record.classList.remove("reaction-live")
         record.hide("open")
         document.body?.style?.overflow = ""
         state.view = ViewState.CABINET
