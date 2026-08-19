@@ -57,7 +57,7 @@ function renderObjects(layer){
   layer.items.forEach((item,i)=>{
     const button=document.createElement("button");button.className="object";button.style.left=positions[i][0]+"%";button.style.top=positions[i][1]+"%";button.dataset.index=i;
     button.innerHTML=`<span class="shape ${item.shape}"></span><span class="object-label">${item.name}</span>`;
-    button.addEventListener("pointerdown",startDrag);button.addEventListener("click",()=>{if(button.dataset.justDragged){delete button.dataset.justDragged;return}inspectArtifact(item,i)});contents.append(button);
+    button.addEventListener("pointerdown",startDrag);button.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")inspectArtifact(item,i)});contents.append(button);
   });
 }
 function startDrag(e){
@@ -69,8 +69,7 @@ function moveDrag(e){
 function endDrag(e){
   const d=drag;if(!d)return;window.removeEventListener("pointermove",moveDrag);drag=null;
   const distance=Math.hypot(e.clientX-d.startX,e.clientY-d.startY);
-  if(distance<7)return;
-  d.el.dataset.justDragged="1";
+  if(distance<7){setTimeout(()=>inspectArtifact(layers[current].items[+d.el.dataset.index],+d.el.dataset.index),0);return}
   moved.add(d.el.dataset.index);tone(180,.08,"triangle");
   if(moved.size>=layers[current].items.length){$("#thresholdText").textContent=layers[current].threshold;threshold.classList.add("ready");setNote("All objects displaced. The drawer has revealed a second opinion about down.");}
 }
