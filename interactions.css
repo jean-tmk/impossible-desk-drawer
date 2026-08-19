@@ -1,0 +1,30 @@
+.landing{transition:opacity .52s ease,transform .52s cubic-bezier(.2,.8,.2,1)}
+.landing.leaving{opacity:0;transform:scale(.965) translateY(-12px);pointer-events:none}
+button{transition:transform .18s ease,filter .18s ease,background-color .25s ease,border-color .25s ease}
+button:hover:not(:disabled){filter:brightness(1.12)}
+.button-hit{transform:scale(.955)!important;filter:brightness(1.25)!important}
+.artifact.current{border-color:var(--acid,#e9da67);box-shadow:0 28px 80px #e9da672b;transform:translateY(-10px)}
+.artifact.current .artifact-meta b{transform:rotate(45deg);color:var(--acid,#e9da67)}
+.record-visual{position:relative;overflow:hidden}
+.record-visual:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 50%,#fff9 0,transparent 52%)}
+.record.reaction-live .record-visual:after{animation:reactionFlash 1.2s ease-out}
+#recordImage{transform-origin:center;will-change:transform,filter}
+#recordImage.reacting.weather-letter{animation:weatherReaction 2.2s ease-in-out}
+#recordImage.reacting.staircase-key{animation:keyReaction 2.2s cubic-bezier(.2,.9,.2,1)}
+#recordImage.reacting.moon-teacup{animation:moonReaction 2.2s ease-in-out}
+#recordImage.reacting.forest-file{animation:forestReaction 2.2s ease-in-out}
+#recordImage.reacting.koi-drawer{animation:koiReaction 2.2s ease-in-out}
+#recordImage.reacting.paper-door{animation:doorReaction 2.2s ease-in-out}
+.activate.confirmed{background:#315b65!important;color:white!important;letter-spacing:.08em}
+.unlocked{animation:unlockPulse 1.4s ease-in-out infinite;box-shadow:0 0 0 0 #e9da6777}
+.toast{position:fixed;z-index:1000;left:50%;bottom:28px;max-width:min(620px,calc(100vw - 32px));padding:13px 18px;transform:translate(-50%,24px);opacity:0;background:#f5eddb;color:#171426;border:1px solid #171426;font:500 12px/1.45 "DM Mono",monospace;letter-spacing:.04em;box-shadow:8px 8px 0 #171426;transition:.28s ease;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@keyframes reactionFlash{0%{opacity:0}25%{opacity:.9}100%{opacity:0}}
+@keyframes weatherReaction{0%,100%{transform:translate(0) rotate(0);filter:none}18%{transform:translate(-8px,-14px) rotate(-2deg)}35%{transform:translate(9px,6px) rotate(2deg);filter:brightness(1.35) saturate(1.4)}58%{transform:translate(-5px,14px) rotate(-1deg)}80%{transform:translate(5px,-5px)}}
+@keyframes keyReaction{0%,100%{transform:rotate(0) scale(1)}35%{transform:rotate(12deg) scale(1.08)}65%{transform:rotate(-9deg) scale(.96);filter:drop-shadow(0 0 18px #e9da67)}}
+@keyframes moonReaction{0%,100%{transform:scale(1);filter:none}45%{transform:scale(1.09) translateY(-8px);filter:brightness(1.45) drop-shadow(0 0 32px #fff0a8)}70%{transform:scale(1.04)}}
+@keyframes forestReaction{0%,100%{transform:scale(1);filter:none}30%{transform:scale(1.04) translateY(8px)}62%{transform:scale(1.12) translateY(-12px);filter:saturate(1.65) brightness(1.15)}}
+@keyframes koiReaction{0%,100%{transform:translateX(0) rotate(0)}25%{transform:translateX(-24px) rotate(-3deg)}55%{transform:translateX(28px) rotate(3deg);filter:saturate(1.7)}78%{transform:translateX(-8px) rotate(-1deg)}}
+@keyframes doorReaction{0%,100%{transform:translateX(0);filter:none}14%,42%,70%{transform:translateX(-10px)}28%,56%,84%{transform:translateX(10px);filter:contrast(1.25)}}
+@keyframes unlockPulse{0%,100%{box-shadow:0 0 0 0 #e9da6777}50%{box-shadow:0 0 0 12px transparent}}
+@media(prefers-reduced-motion:reduce){.reacting,.reaction-live .record-visual:after,.unlocked{animation-duration:.01ms!important;animation-iteration-count:1!important}.landing{transition:none}}
