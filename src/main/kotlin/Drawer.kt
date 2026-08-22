@@ -65,14 +65,18 @@ sealed class FieldTest(val artifactId: String, val instruction: String) {
 
     class BranchingFile : FieldTest(
         "forest-file",
-        "Follow the smallest path through the file."
+        "Follow the smallest path through five divisions of the file."
     ) {
         val branches = mapOf(
             "start" to listOf("moss", "fern"),
-            "moss" to listOf("mushroom", "river"),
-            "fern" to listOf("thorns", "mushroom")
+            "moss" to listOf("dew", "acorn"),
+            "dew" to listOf("root", "clover"),
+            "clover" to listOf("snail", "mushroom"),
+            "mushroom" to listOf("archive", "burrow")
         )
-        fun isApproval(node: String) = node == "mushroom"
+        val safeRoute = listOf("moss", "dew", "clover", "mushroom", "archive")
+        fun isApproval(node: String) = node == "archive"
+        fun acceptsStep(depth: Int, node: String) = safeRoute.getOrNull(depth) == node
     }
 
     class PaperclipRecovery : FieldTest(
