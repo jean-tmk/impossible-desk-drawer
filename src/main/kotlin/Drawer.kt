@@ -37,6 +37,79 @@ enum class DepthBand(val label: String, val frequency: Double) {
 
 enum class ViewState { LANDING, CABINET, RECORD, BOTTOM, ENDING }
 
+/** Six actual field tests—not decorative button reactions. */
+sealed class FieldTest(val artifactId: String, val instruction: String) {
+    class SentenceOrder : FieldTest(
+        "weather-letter",
+        "Reassemble the sentence before the ink washes away."
+    ) {
+        val answer = listOf("THE", "RAIN", "IS", "FALLING", "UPWARD")
+        val shuffled = listOf("UPWARD", "THE", "FALLING", "RAIN", "IS")
+        fun accepts(words: List<String>) = words == answer
+    }
+
+    class StairSequence : FieldTest(
+        "staircase-key",
+        "Climb the staircase hidden inside the key."
+    ) {
+        val route = listOf("UP", "RIGHT", "UP", "LEFT", "UP")
+        fun acceptsStep(position: Int, direction: String) = route.getOrNull(position) == direction
+    }
+
+    class MoonSteep : FieldTest(
+        "moon-teacup",
+        "Release the cup while the steeping meter is inside the silver band."
+    ) {
+        fun accepts(percent: Int) = percent in 62..76
+    }
+
+    class BranchingFile : FieldTest(
+        "forest-file",
+        "Follow the smallest path through the file."
+    ) {
+        val branches = mapOf(
+            "start" to listOf("moss", "fern"),
+            "moss" to listOf("mushroom", "river"),
+            "fern" to listOf("thorns", "mushroom")
+        )
+        fun isApproval(node: String) = node == "mushroom"
+    }
+
+    class PaperclipRecovery : FieldTest(
+        "koi-drawer",
+        "Recover the three paper clips whenever they surface."
+    ) {
+        val required = 3
+        fun isComplete(recovered: Int) = recovered >= required
+    }
+
+    class KnockRhythm : FieldTest(
+        "paper-door",
+        "Knock quick, quick, pause, knock."
+    ) {
+        fun accepts(taps: List<Double>): Boolean {
+            if (taps.size != 4) return false
+            val firstGap = taps[1] - taps[0]
+            val secondGap = taps[2] - taps[1]
+            val pause = taps[3] - taps[2]
+            return abs(firstGap - 260) < 180 && abs(secondGap - 260) < 180 && pause > 350
+        }
+    }
+}
+
+object FieldTestCatalogue {
+    val tests: List<FieldTest> = listOf(
+        FieldTest.SentenceOrder(),
+        FieldTest.StairSequence(),
+        FieldTest.MoonSteep(),
+        FieldTest.BranchingFile(),
+        FieldTest.PaperclipRecovery(),
+        FieldTest.KnockRhythm()
+    )
+
+    fun forArtifact(id: String): FieldTest = tests.first { it.artifactId == id }
+}
+
 data class DrawerState(
     var view: ViewState = ViewState.LANDING,
     var selected: Int = 0,
