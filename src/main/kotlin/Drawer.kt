@@ -85,14 +85,13 @@ sealed class FieldTest(val artifactId: String, val instruction: String) {
 
     class KnockRhythm : FieldTest(
         "paper-door",
-        "Knock quick, quick, pause, knock."
+        "Knock, knock, pause, knock."
     ) {
         fun accepts(taps: List<Double>): Boolean {
-            if (taps.size != 4) return false
-            val firstGap = taps[1] - taps[0]
-            val secondGap = taps[2] - taps[1]
-            val pause = taps[3] - taps[2]
-            return abs(firstGap - 260) < 180 && abs(secondGap - 260) < 180 && pause > 350
+            if (taps.size != 3) return false
+            val quickGap = taps[1] - taps[0]
+            val pause = taps[2] - taps[1]
+            return quickGap in 90.0..520.0 && pause in 520.0..1800.0
         }
     }
 }
