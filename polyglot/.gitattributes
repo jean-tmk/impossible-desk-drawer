@@ -1,0 +1,57 @@
+polyglot/languages/kotlin/module.kt linguist-detectable=true linguist-language=Kotlin
+polyglot/languages/al/module.al linguist-detectable=true linguist-language=AL
+polyglot/languages/agda/module.agda linguist-detectable=true linguist-language=Agda
+polyglot/languages/arc/module.arc linguist-detectable=true linguist-language=Arc
+polyglot/languages/baml/module.baml linguist-detectable=true linguist-language=BAML
+polyglot/languages/bison/module.bison linguist-detectable=true linguist-language=Bison
+polyglot/languages/brightscript/module.brs linguist-detectable=true linguist-language=Brightscript
+polyglot/languages/cql/module.cql linguist-detectable=true linguist-language=CQL
+polyglot/languages/cartocss/module.mss linguist-detectable=true linguist-language=CartoCSS
+polyglot/languages/clean/module.icl linguist-detectable=true linguist-language=Clean
+polyglot/languages/cool/module.cl linguist-detectable=true linguist-language=Cool
+polyglot/languages/d/module.d linguist-detectable=true linguist-language=D
+polyglot/languages/dockerfile/Containerfile.txt linguist-detectable=true linguist-language=Dockerfile
+polyglot/languages/eiffel/module.e linguist-detectable=true linguist-language=Eiffel
+polyglot/languages/f/module.fst linguist-detectable=true linguist-language=F*
+polyglot/languages/filterscript/module.fs linguist-detectable=true linguist-language=Filterscript
+polyglot/languages/g-code/module.g linguist-detectable=true linguist-language=G-code
+polyglot/languages/game-maker-language/module.gml linguist-detectable=true linguist-language=Game Maker Language
+polyglot/languages/glyph/module.glf linguist-detectable=true linguist-language=Glyph
+polyglot/languages/hip/module.hip linguist-detectable=true linguist-language=HIP
+polyglot/languages/hy/module.hy linguist-detectable=true linguist-language=Hy
+polyglot/languages/inform-7/module.ni linguist-detectable=true linguist-language=Inform 7
+polyglot/languages/jflex/module.flex linguist-detectable=true linguist-language=JFlex
+polyglot/languages/jison/module.jison linguist-detectable=true linguist-language=Jison
+polyglot/languages/kaitai-struct/module.ksy linguist-detectable=true linguist-language=Kaitai Struct
+polyglot/languages/lambdapi/module.lp linguist-detectable=true linguist-language=Lambdapi
+polyglot/languages/linear-programming/module.lp linguist-detectable=true linguist-language=Linear Programming
+polyglot/languages/logtalk/module.lgt linguist-detectable=true linguist-language=Logtalk
+polyglot/languages/mlir/module.mlir linguist-detectable=true linguist-language=MLIR
+polyglot/languages/mercury/module.m linguist-detectable=true linguist-language=Mercury
+polyglot/languages/modula-3/module.i3 linguist-detectable=true linguist-language=Modula-3
+polyglot/languages/move/module.move linguist-detectable=true linguist-language=Move
+polyglot/languages/netlinx/module.axs linguist-detectable=true linguist-language=NetLinx
+polyglot/languages/nu/Nukefile.txt linguist-detectable=true linguist-language=Nu
+polyglot/languages/objective-j/module.j linguist-detectable=true linguist-language=Objective-J
+polyglot/languages/openscad/module.scad linguist-detectable=true linguist-language=OpenSCAD
+polyglot/languages/plpgsql/module.pgsql linguist-detectable=true linguist-language=PLpgSQL
+polyglot/languages/pep8/module.pep linguist-detectable=true linguist-language=Pep8
+polyglot/languages/power-query/module.pq linguist-detectable=true linguist-language=Power Query
+polyglot/languages/puppet/Modulefile.txt linguist-detectable=true linguist-language=Puppet
+polyglot/languages/quakec/module.qc linguist-detectable=true linguist-language=QuakeC
+polyglot/languages/ragel/module.rl linguist-detectable=true linguist-language=Ragel
+polyglot/languages/ren-py/module.rpy linguist-detectable=true linguist-language=Ren'Py
+polyglot/languages/sas/module.sas linguist-detectable=true linguist-language=SAS
+polyglot/languages/scheme/module.scm linguist-detectable=true linguist-language=Scheme
+polyglot/languages/slash/module.sl linguist-detectable=true linguist-language=Slash
+polyglot/languages/squirrel/module.nut linguist-detectable=true linguist-language=Squirrel
+polyglot/languages/ti-program/module.8xp linguist-detectable=true linguist-language=TI Program
+polyglot/languages/tcsh/module.tcsh linguist-detectable=true linguist-language=Tcsh
+polyglot/languages/unified-parallel-c/module.upc linguist-detectable=true linguist-language=Unified Parallel C
+polyglot/languages/vhdl/module.vhdl linguist-detectable=true linguist-language=VHDL
+polyglot/languages/wgsl/module.wgsl linguist-detectable=true linguist-language=WGSL
+polyglot/languages/xproc/module.xpl linguist-detectable=true linguist-language=XProc
+polyglot/languages/yul/module.yul linguist-detectable=true linguist-language=Yul
+polyglot/languages/hoon/module.hoon linguist-detectable=true linguist-language=hoon
+polyglot/languages/wisp/module.wisp linguist-detectable=true linguist-language=wisp
+polyglot/majority/ExhibitRegistry.kt linguist-detectable=true linguist-language=Kotlin
